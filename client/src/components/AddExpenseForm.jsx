@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useFetcher } from "react-router-dom";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
-
 import { useTranslation } from "react-i18next";
 
 const AddExpenseForm = ({ budgets }) => {
@@ -16,28 +15,29 @@ const AddExpenseForm = ({ budgets }) => {
   useEffect(() => {
     if (!isSubmitting) {
       formRef.current.reset();
-      focusRef.current.focus();
+      setTimeout(() => {
+        if (focusRef.current) {
+          focusRef.current.focus();
+        }
+      }, 0);
     }
   }, [isSubmitting]);
 
   return (
-    <div
-      className="relative p-6 bg-white rounded-lg 
-    shadow-lg border-2 border-gray-200 mb-6"
-    >
-      <div className="absolute inset-1 rounded border-2 border-dashed border-blue-500 pointer-events-none"></div>
-      <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-        {t("addExpense")}{" "}
-        <span className="text-blue-500">
-          {budgets.length === 1 && `${budgets.map((budg) => budg.name)}`}
-        </span>{" "}
-      </h2>
+    <div className="h-full p-6 bg-white rounded-xl shadow-md border border-gray-100 flex flex-col justify-center">
+      <div className="flex items-center gap-2 mb-4">
+        <div className="p-2 bg-green-100 rounded-lg text-green-600">
+          <PlusCircleIcon className="w-6 h-6" />
+        </div>
+        <h2 className="text-xl font-bold text-gray-800">{t("addExpense")}</h2>
+      </div>
+
       <fetcher.Form method="post" className="grid gap-4" ref={formRef}>
-        <div className="expense-inputs grid gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <div className="grid gap-2">
             <label
               htmlFor="newExpense"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-semibold text-gray-600"
             >
               {t("expenseName")}
             </label>
@@ -48,13 +48,13 @@ const AddExpenseForm = ({ budgets }) => {
               placeholder="e.g., Coffee"
               ref={focusRef}
               required
-              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
             />
           </div>
           <div className="grid gap-2">
             <label
               htmlFor="newExpenseAmount"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-semibold text-gray-600"
             >
               {t("amount")}
             </label>
@@ -66,14 +66,15 @@ const AddExpenseForm = ({ budgets }) => {
               id="newExpenseAmount"
               placeholder="e.g., 3.50"
               required
-              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
             />
           </div>
         </div>
+
         <div className="grid gap-2" hidden={budgets.length === 1}>
           <label
             htmlFor="newExpenseBudget"
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-semibold text-gray-600"
           >
             {t("budgetCategory")}
           </label>
@@ -81,7 +82,7 @@ const AddExpenseForm = ({ budgets }) => {
             name="newExpenseBudget"
             id="newExpenseBudget"
             required
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 text-gray-800 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none appearance-none"
           >
             {budgets
               .sort((a, b) => a.createdAt - b.createdAt)
@@ -94,23 +95,20 @@ const AddExpenseForm = ({ budgets }) => {
               })}
           </select>
         </div>
+
         <input type="hidden" name="_action" value="createExpense" />
+
         <button
           type="submit"
-          className="relative flex items-center w-full justify-center py-2 px-6 
-          border-2 border-black bg-black text-white font-bold text-lg rounded-md 
-          transition duration-200 hover:bg-gray-900 hover:text-yellow-500"
           disabled={isSubmitting}
+          className="mt-2 w-full py-3 px-6 rounded-lg bg-gray-900 text-white font-semibold shadow-lg hover:bg-gray-800 hover:shadow-xl focus:ring-4 focus:ring-gray-300 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
-            <span>{t("submit")}</span>
+            <span>{t("submitting")}...</span>
           ) : (
             <>
-              <span className="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-gray-700"></span>
-              <span className="relative inline-flex items-center top-1 left-1">
-                {t("addExpense")}
-                <PlusCircleIcon width={20} />
-              </span>
+              <span>{t("addExpense")}</span>
+              <PlusCircleIcon width={20} />
             </>
           )}
         </button>

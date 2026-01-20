@@ -22,7 +22,7 @@ export async function budgetLoader({ params }) {
   });
 
   if (!budget) {
-    throw new Error("The budget you’re trying to find doesn’t exist");
+    throw new Error("Le budget que vous essayez de trouver n'existe pas.");
   }
 
   return { budget, expenses };
@@ -34,26 +34,26 @@ export async function budgetAction({ request }) {
 
   if (_action === "createExpense") {
     try {
-      createExpense({
+      await createExpense({
         name: values.newExpense,
         amount: values.newExpenseAmount,
         budgetId: values.newExpenseBudget,
       });
-      return toast.success(`Expense ${values.newExpense} created!`);
+      return toast.success(`Dépense ${values.newExpense} créée !`);
     } catch (e) {
-      throw new Error("There was a problem creating your expense.");
+      throw new Error("Problème lors de la création de la dépense.");
     }
   }
 
   if (_action === "deleteExpense") {
     try {
-      deleteItem({
+      await deleteItem({
         key: "expenses",
         id: values.expenseId,
       });
-      return toast.success("Expense deleted!");
+      return toast.success("Dépense supprimée !");
     } catch (e) {
-      throw new Error("There was a problem deleting your expense.");
+      throw new Error("Problème lors de la suppression de la dépense.");
     }
   }
 }
@@ -63,25 +63,31 @@ const BudgetPage = () => {
   const { t } = useTranslation();
 
   return (
-    <div
-      className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8 bg-white rounded-lg shadow-lg"
-      style={{
-        "--accent": budget.color,
-      }}
-    >
-      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-800 mb-6">
-        <span className="text-blue-600">{budget.name}</span> {t("overview")}
-      </h1>
-      <div className="flex-lg">
-        <BudgetItem budget={budget} showDelete={true} expenses={expenses} />
-
-        <AddExpenseForm budgets={[budget]} />
+    <div className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8 lg:mt-6">
+      <div className="mb-8">
+        <h1 className="text-3xl font-extrabold text-gray-800">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">
+            {budget.name}
+          </span>{" "}
+          <span className="text-gray-400 font-light">/ {t("overview")}</span>
+        </h1>
       </div>
+
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-10">
+        <div className="w-full">
+          <BudgetItem budget={budget} showDelete={true} expenses={expenses} />
+        </div>
+        <div className="w-full h-full">
+          <AddExpenseForm budgets={[budget]} />
+        </div>
+      </div>
+
       {expenses && expenses.length > 0 && (
-        <div className="grid-md">
-          <div className="border-b-2 border-gray-300 pb-2"></div>
-          <h2 className="text-lg text-gray-600 mt-8 font-semibold">
-            <span className="text-blue-600">{budget.name}</span> {t("expenses")}
+        <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+          <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <span className="w-2 h-8 bg-blue-500 rounded-full"></span>
+            {t("expenses")}{" "}
+            <span className="text-gray-400 font-normal">({budget.name})</span>
           </h2>
           <Table expenses={expenses} showBudget={false} budgets={[budget]} />
         </div>

@@ -95,9 +95,10 @@ export const calculateSpentByBudget = (budgetId, expenses) => {
 };
 
 export const formatCurrency = (amt) => {
-  return amt.toLocaleString(undefined, {
+  return amt.toLocaleString("en-US", {
     style: "currency",
-    currency: "USD",
+    currency: "USD", 
+    currencyDisplay: "narrowSymbol", 
   });
 };
 

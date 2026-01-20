@@ -1,12 +1,10 @@
 import { Outlet, useLoaderData } from "react-router-dom";
 import { fetchData } from "../helpers"
 
-// components
 import Nav from "../components/Nav";
 
-// loader
-export function mainLoader() {
-    const userName = fetchData("userName");
+export async function mainLoader() {
+    const userName = await fetchData("userName");
     return { userName }
 }
 

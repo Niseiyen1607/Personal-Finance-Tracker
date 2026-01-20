@@ -1,5 +1,5 @@
 import { Link, useFetcher } from "react-router-dom";
-import { TrashIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { formatCurrency, formatDateToLocaleString } from "../helpers";
 import { useTranslation } from "react-i18next";
 
@@ -13,51 +13,51 @@ const ExpenseItem = ({ expense, showBudget, budgets = [] }) => {
 
   return (
     <>
-      <td className="p-2 text-sm text-gray-800 text-center">{expense.name}</td>
-      <td className="p-2 text-sm text-gray-800 text-center">
+      <td className="px-4 py-3 text-sm font-medium text-gray-700 text-center">
+        {expense.name}
+      </td>
+      <td className="px-4 py-3 text-sm font-bold text-gray-700 text-center">
         {formatCurrency(expense.amount)}
       </td>
-      <td className="p-2 text-sm text-gray-800 text-center">
+      <td className="px-4 py-3 text-sm text-gray-500 text-center">
         {formatDateToLocaleString(expense.createdAt)}
       </td>
 
       {showBudget && (
-        <td className="p-2 text-center">
+        <td className="px-4 py-3 text-center">
           {budget ? (
             <Link
               to={`/Personal-Finance-Tracker/budget/${budget.id}`}
               style={{
                 "--accent": budget.color,
               }}
-              className="text-sm font-medium text-blue-500 hover:text-blue-700"
+              className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
             >
               {budget.name}
             </Link>
           ) : (
-            <span className="text-gray-400 text-xs">Deleted</span>
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-400">
+              Supprimé
+            </span>
           )}
         </td>
       )}
 
-      <td className="p-2 text-center">
+      <td className="px-4 py-3 text-center">
         <fetcher.Form method="post">
           <input type="hidden" name="_action" value="deleteExpense" />
           <input type="hidden" name="expenseId" value={expense.id} />
           <button
             type="submit"
-            className="relative flex items-center w-full justify-center py-2 px-6 
-              border-2 border-black bg-black text-white font-bold text-lg rounded-md 
-              transition duration-200 hover:bg-gray-900 hover:text-yellow-500"
+            className="p-2 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all duration-200"
             aria-label={t("deleteExpenseLabel", { expenseName: expense.name })}
           >
-            <span className="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-gray-700"></span>
-            <span className="relative inline-flex items-center top-1 left-1">
-              <TrashIcon width={20} />
-            </span>
+            <TrashIcon width={20} />
           </button>
         </fetcher.Form>
       </td>
     </>
   );
 };
+
 export default ExpenseItem;

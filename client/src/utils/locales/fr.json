@@ -35,7 +35,8 @@
 
     "overview": "Vue d'ensemble",
     "expenses": "Dépenses",
-    
+    "logout": "Déconnexion",
+
     "welcomeBack": "Bienvenue",
     "existingBudgets": "Budgets existants",
     "recentExpenses": "Dépenses récentes",

@@ -8,6 +8,6 @@ const {
 
 router.route("/").get(getExpenses).post(createExpense);
 
-srouter.route("/:id").delete(deleteExpense);
+router.route("/:id").delete(deleteExpense);
 
 module.exports = router;

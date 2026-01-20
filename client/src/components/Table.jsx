@@ -5,10 +5,10 @@ const Table = ({ expenses, showBudget = true, budgets = [] }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full table-auto bg-white shadow-md rounded-lg border-collapse">
+    <div className="overflow-x-auto rounded-xl border border-gray-100 shadow-sm">
+      <table className="min-w-full table-auto bg-white">
         <thead>
-          <tr className="bg-gray-100 text-gray-700">
+          <tr className="bg-gray-50 border-b border-gray-100">
             {[
               t("name"),
               t("amount"),
@@ -18,16 +18,19 @@ const Table = ({ expenses, showBudget = true, budgets = [] }) => {
             ].map((header, index) => (
               <th
                 key={index}
-                className="px-4 py-2 text-center font-medium border-b-2 border-gray-300"
+                className="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider"
               >
                 {header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="divide-y divide-gray-50">
           {expenses.map((expense) => (
-            <tr key={expense.id} className="hover:bg-gray-50">
+            <tr
+              key={expense.id}
+              className="hover:bg-gray-50/50 transition-colors duration-150"
+            >
               <ExpenseItem
                 expense={expense}
                 showBudget={showBudget}
